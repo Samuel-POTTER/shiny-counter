@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  api:
+    build: .
+    container_name: server_container
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./:/app
+    networks:
+      - api-pokemon-network
+    depends_on:
+      - db
+    # command: npx prisma migrate dev --name init && npm run dev
+
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    volumes:
+      - data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    command: -p ${POSTGRES_PORT}
+    networks:
+      - api-pokemon-network
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+
+volumes:
+  data:
+
+networks:
+  api-pokemon-network:
