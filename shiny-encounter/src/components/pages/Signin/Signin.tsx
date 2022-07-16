@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
+import { useAuthorization } from '../../../hooks/useAuthorization';
 
 export const Signin = () => {
+    useAuthorization();
     return (
         <div className='h-screen bg-primary'>
             <img src='./pokeball-icon.png' className='object-cover absolute  -top-20 -left-48' alt='pokeball' />

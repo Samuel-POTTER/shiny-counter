@@ -5,5 +5,8 @@ export const authorization = async (req: Request, res: Response) => {
     const jwtSecret = process.env.OAUTH_SECRET_KEY;
 
     const generateToken = jwt.sign({}, jwtSecret!, { expiresIn: '2h' });
-    res.status(200).send(generateToken);
+    res.status(200).send({
+        auth_token: generateToken,
+        expire_in: 2 * 60 * 60
+    });
 };
