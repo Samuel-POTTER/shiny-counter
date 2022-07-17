@@ -7,10 +7,7 @@ type OauthType = { auth_token: string; expire_in: number };
 
 const useAuthorization = () => {
     const [authToken, setAuthToken] = useLocalStorage<OauthType>('SHINY_AUTH_TOKEN');
-
-    const token = useQuery('authorization', getAuthorization, {
-        select: ({ data }) => data
-    });
+    const token = useQuery('authorization', getAuthorization);
 
     useEffect(() => {
         if (token.status !== 'success') return;
@@ -21,9 +18,9 @@ const useAuthorization = () => {
 
     useEffect(() => {
         if (!authToken) return;
-        const timer = setInterval(refreshAuthToken, token.data.expire_in * 1000);
+        const timer = setInterval(refreshAuthToken, authToken.expire_in * 1000);
         return () => clearInterval(timer);
-    }, [authToken]);
+    }, [authToken, refreshAuthToken]);
     return authToken?.auth_token;
 };
 
