@@ -1,11 +1,11 @@
 import { useCallback, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { getAuthorization } from '../request/auth';
-import { useLocalStorage } from './useLocalStorage';
+import useLocalStorage from './useLocalStorage';
 
 type OauthType = { auth_token: string; expire_in: number };
 
-export const useAuthorization = () => {
+const useAuthorization = () => {
     const [authToken, setAuthToken] = useLocalStorage<OauthType>('SHINY_AUTH_TOKEN');
 
     const token = useQuery('authorization', getAuthorization, {
@@ -26,3 +26,5 @@ export const useAuthorization = () => {
     }, [authToken]);
     return authToken?.auth_token;
 };
+
+export default useAuthorization;
